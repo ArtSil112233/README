@@ -1,10 +1,11 @@
 import * as readline from 'readline';
 import * as fs from 'fs';
 
-
 const usuariosRegistrados = [
-  { usuario: 'pepito', contraseña: 'pepe123' },
-  { usuario: 'dota2', contraseña: 'xdd22' },
+  { usuario: 'cesar', contraseña: 'cesar123' },
+  { usuario: 'mateo', contraseña: 'mateo123' },
+  { usuario: 'javier', contraseña: 'javier123' },
+  { usuario: 'arturo', contraseña: 'arturo123' },
 ];
 
 let busquedaTexto: string[] = [];
@@ -54,11 +55,11 @@ async function IngresarAlSistema() {
   console.log("Ingrese la contraseña: ");
   let contraseña = await leerString();
   if (Verificar(usuario, contraseña)) {
-        console.log("Bienvenido...");
-        menu();
-  } 
+    console.log("Bienvenido...");
+    menu();
+  }
   else {
-   console.log("No existe ningún usuario");
+    console.log("No existe ningún usuario");
     IngresarAlSistema();
   }
 }
@@ -71,63 +72,62 @@ async function menu() {
   console.log("4) Salir");
   console.log("Seleccione opcion: ");
   let opcion = await leerString();
-    if (opcion === '1'){
-      let cantidadDeLibro = 0;
-      registroTexto();
-    } else if (opcion === '2') {
-      console.log("Seleccione una opción: ");
-      console.log("1) Mostrar cantidad de apariciones: ");
-      console.log("2) Ver apariciones");
-      let opcion2 = await leerNumero();
-      if(opcion2 === 1){
-        console.log("Por favor seleccionar un algoritmo para la búsqueda, digite en número");
-        console.log("->1) Fuerza Bruta");
-        console.log("->2) KMP");
-        console.log("->3) Boyer-Moore");
-        let algoritmo = await leerNumero();
-        if(algoritmo===1){
-          cantidadAparicionesFB();
-        }
-        else if(algoritmo===2){
-          cantidadAparicionesKMP();
-        }
-        else if(algoritmo===3){
-          cantidadAparicionesBM();
-        }
-        else{
-          console.log("El numero digitado no es válido,  Regresando...");
-          menu();
-        }
+  if (opcion === '1') {
+    registroTexto();
+  } else if (opcion === '2') {
+    console.log("Seleccione una opción: ");
+    console.log("1) Mostrar cantidad de apariciones: ");
+    console.log("2) Ver apariciones");
+    let opcion2 = await leerNumero();
+    if (opcion2 === 1) {
+      console.log("Por favor seleccionar un algoritmo para la búsqueda, digite en número");
+      console.log("->1) Fuerza Bruta");
+      console.log("->2) KMP");
+      console.log("->3) Boyer-Moore");
+      let algoritmo = await leerNumero();
+      if (algoritmo === 1) {
+        cantidadAparicionesFB();
       }
-      else if(opcion2 === 2){
-        console.log("Por favor seleccionar un algoritmo para la búsqueda, digite en número");
-        console.log("->1) Fuerza Bruta");
-        console.log("->2) KMP");
-        console.log("->3) Boyer-Moore");
-        let algoritmo = await leerNumero();
-        if(algoritmo===1){
-          AparicionesFB();
-        }
-        else if(algoritmo===2){
-          AparicionesKMP();
-        }
-        else if(algoritmo===3){
-          AparicionesBM();
-        }
-        else{
-          console.log("El numero digitado no es válido,  Regresando...");
-          menu();
-        }
+      else if (algoritmo === 2) {
+        cantidadAparicionesKMP();
       }
-      else{
+      else if (algoritmo === 3) {
+        cantidadAparicionesBM();
+      }
+      else {
         console.log("El numero digitado no es válido,  Regresando...");
         menu();
       }
-    } else if (opcion ==='3') {
-      historial();
-    } else {
-      console.log("Saliendo..");
     }
+    else if (opcion2 === 2) {
+      console.log("Por favor seleccionar un algoritmo para la búsqueda, digite en número");
+      console.log("->1) Fuerza Bruta");
+      console.log("->2) KMP");
+      console.log("->3) Boyer-Moore");
+      let algoritmo = await leerNumero();
+      if (algoritmo === 1) {
+        AparicionesFB();
+      }
+      else if (algoritmo === 2) {
+        AparicionesKMP();
+      }
+      else if (algoritmo === 3) {
+        AparicionesBM();
+      }
+      else {
+        console.log("El numero digitado no es válido,  Regresando...");
+        menu();
+      }
+    }
+    else {
+      console.log("El numero digitado no es válido,  Regresando...");
+      menu();
+    }
+  } else if (opcion === '3') {
+    historial();
+  } else {
+    console.log("Saliendo..");
+  }
 }
 
 async function registroTexto() {
@@ -135,18 +135,18 @@ async function registroTexto() {
   let nombre = await leerString();
   console.log("Por favor copie la ruta de su texto de esta forma: ./{nombre_del_texto}.txt ");
   let filePath = await leerString();
-//existsSync: Se utiliza para comprabar la existencia de un archivo txt
+  //existsSync: Se utiliza para comprabar la existencia de un archivo txt
   let libro1: string;
   if (fs.existsSync(filePath)) {
     libro1 = fs.readFileSync(filePath, 'utf-8');
     nombreLIBRO.push([nombre, libro1]);
     console.log("Texto registrado correctamente!");
     menu();
-  } 
+  }
   else {
     console.log("El archivo no existe.");
-    console.log("Por favor intentelo de nuevo\n\n");
-    await registroTexto(); 
+    console.log("Regresando....\n\n");
+    menu();
   }
 }
 
@@ -186,7 +186,7 @@ async function AparicionesFB() {
       let contexto = libro.substring(inicio - 10, fin + 10);
       console.log(contexto + "\n");
     }
-    busquedaPalabra.push([palabra,apariciones.length,(tiempotranscurrido/1000.0)]);
+    busquedaPalabra.push([palabra, apariciones.length, (tiempotranscurrido / 1000.0)]);
     menu();
   }
 }
@@ -221,7 +221,7 @@ async function cantidadAparicionesFB() {
     let tiempotranscurrido = final - inicial;
     console.log("\n\nAPARICIONES");
     console.log(apariciones.length);
-    busquedaPalabra.push([palabra,apariciones.length,(tiempotranscurrido/1000.0)]);
+    busquedaPalabra.push([palabra, apariciones.length, (tiempotranscurrido / 1000.0)]);
     menu();
   }
 }
@@ -284,7 +284,7 @@ async function AparicionesKMP() {
       let contexto = libro.substring(inicio - 10, fin + 10);
       console.log(contexto + "\n");
     }
-    busquedaPalabra.push([palabra,apariciones.length,(tiempotranscurrido/1000.0)]);
+    busquedaPalabra.push([palabra, apariciones.length, (tiempotranscurrido / 1000.0)]);
     menu();
   }
 }
@@ -318,7 +318,7 @@ async function cantidadAparicionesKMP() {
     let tiempotranscurrido = final - inicial;
     console.log("\n\nAPARICIONES");
     console.log(apariciones.length);
-    busquedaPalabra.push([palabra,apariciones.length,(tiempotranscurrido/1000.0)]);
+    busquedaPalabra.push([palabra, apariciones.length, (tiempotranscurrido / 1000.0)]);
     menu();
   }
 }
@@ -405,7 +405,7 @@ async function AparicionesBM() {
     console.log("¿Qué palabra buscas?: ");
     let palabra = await leerString();
     let inicial = new Date().getTime();
-    let apariciones = BM(libro, palabra);
+    let apariciones = BoyerMoore(libro, palabra);
     let final = new Date().getTime();
     let tiempotranscurrido = final - inicial;
     console.log("\n\nAPARICIONES:");
@@ -415,7 +415,7 @@ async function AparicionesBM() {
       let contexto = libro.substring(inicio - 10, fin + 10);
       console.log(contexto + "\n");
     }
-    busquedaPalabra.push([palabra,apariciones.length,(tiempotranscurrido/1000.0)]);
+    busquedaPalabra.push([palabra, apariciones.length, (tiempotranscurrido / 1000.0)]);
     menu();
   }
 }
@@ -445,76 +445,69 @@ async function cantidadAparicionesBM() {
     console.log("¿Qué palabra buscas?: ");
     let palabra = await leerString();
     let inicial = new Date().getTime();
-    let apariciones = BM(libro, palabra);
+    let apariciones = BoyerMoore(libro, palabra);
     let final = new Date().getTime();
     let tiempotranscurrido = final - inicial;
-
     console.log("\n\nAPARICIONES");
     console.log(apariciones.length);
-    busquedaPalabra.push([palabra,apariciones.length,(tiempotranscurrido/1000.0)]);
+    busquedaPalabra.push([palabra, apariciones.length, (tiempotranscurrido / 1000.0)]);
     menu();
   }
 }
 
-function BM(texto: string, patron: string): number[] {
+function BoyerMoore(texto: string, patron: string): number[] {
+  let inicial = new Date().getTime();
+  const lastOccurrence = buildLastOccurrence(patron, texto);
   const apariciones: number[] = [];
-  const m = patron.length;
-  const n = texto.length;
-  const last = calcularLast(patron);
 
-  let i = m - 1;
-  let j = m - 1;
+  let i = 0;
+  while (i <= texto.length - patron.length) {
+    let j = patron.length - 1;
 
-  while (i < n) {
-    if (texto[i] === patron[j]) {
-      if (j === 0) {
-        apariciones.push(i);
-        i = i + m;
-        j = m - 1;
-      } else {
-        i--;
-        j--;
-      }
+    while (j >= 0 && texto[i + j] === patron[j]) {
+      j--;
+    }
+
+    if (j === -1) {
+      apariciones.push(i);
+      i++;
     } else {
-      i = i + m - Math.min(j, 1 + last[texto.charCodeAt(i)]);
-      j = m - 1;
+      const last = lastOccurrence[texto[i + j].charCodeAt(0)];
+      i += Math.max(1, j - last);
     }
   }
+
+  let final = new Date().getTime();
+  let tiempotranscurrido = final - inicial;
   return apariciones;
 }
 
-function calcularLast(patron: string): number[] {
-  const last: number[] = [];
-  const m = patron.length;
-  const maxChar = 256;
-
-  for (let i = 0; i < maxChar; i++) {
-    last[i] = -1;
+function buildLastOccurrence(patron: string, texto: string): number[] {
+  const lastOccurrence: number[] = new Array(texto.length).fill(-1);
+  for (let i = 0; i < patron.length; i++) {
+    lastOccurrence[patron[i].charCodeAt(0)] = i;
   }
-
-  for (let i = 0; i < m; i++) {
-    last[patron.charCodeAt(i)] = i;
-  }
-
-  return last;
+  return lastOccurrence;
 }
-async function historial(){
+
+
+async function historial() {
   console.log("\nREGISTRO DE BUSQUEDAS DE LIBROS");
-  for(let i=0; i<busquedaTexto.length;i++){
+  for (let i = 0; i < busquedaTexto.length; i++) {
     console.log(busquedaTexto[i]);
   }
   console.log("\nREGISTRO DE BUSQUEDAS DE PALABRAS");
-  for(let i=0; i<busquedaPalabra.length;i++){
-    for(let j=0; j<(busquedaPalabra.length -1);j++){
-      if(busquedaPalabra[j][1] < busquedaPalabra[j+1][1]){
+  for (let i = 0; i < busquedaPalabra.length; i++) {
+    for (let j = 0; j < (busquedaPalabra.length - 1); j++) {
+      if (busquedaPalabra[j][1] < busquedaPalabra[j + 1][1]) {
         let aux = busquedaPalabra[j];
-        busquedaPalabra[j] = busquedaPalabra[j+1];
-        busquedaPalabra[j+1] = aux;
+        busquedaPalabra[j] = busquedaPalabra[j + 1];
+        busquedaPalabra[j + 1] = aux;
       }
     }
   }
   console.log("Palabra \tCantidadApariciones \tDuracionBusqueda(segundos)");
-  for(let i=0; i<busquedaPalabra.length;i++){
+  for (let i = 0; i < busquedaPalabra.length; i++) {
     console.log(busquedaPalabra[i][0] + "\t\t\t" + busquedaPalabra[i][1] + "\t\t\t\t\t" + busquedaPalabra[i][2]);
   }
   menu();
